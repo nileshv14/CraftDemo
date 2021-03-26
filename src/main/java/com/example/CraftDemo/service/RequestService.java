@@ -34,11 +34,21 @@ public class RequestService {
     @Autowired
     private UserService userService;
 
+    /**
+     *
+     * @param userId
+     * @return list of all requests of books requested to other users
+     */
     public List<Request> getUserRequests(String userId) {
 
         return requestRepository.getUserRequests(userId);
     }
 
+    /**
+     *
+     * @param userId
+     * @return list of all requests of other users
+     */
     public List<Request> getRequestedList(String userId) {
 
         return requestRepository.getRequestedList(userId);
@@ -126,6 +136,12 @@ public class RequestService {
         return userRequest;
     }
 
+    /**
+     * The requestee selects one of the requestor's books and modifies request
+     * @param requestId
+     * @return request object
+     */
+
     public Request modifyExchangeRequest(String requestId) {
 
         Request request = requestRepository.getRequest(requestId);
@@ -147,6 +163,13 @@ public class RequestService {
         return request;
     }
 
+    /**
+     * The requestor can complete the request for exchange or requestee can complete for borrow
+     * @param requestId
+     * @return request object
+     * @throws Exception
+     * when coins value is insufficient
+     */
     public Request acceptRequest(String requestId) throws Exception {
 
         Request request = requestRepository.getRequest(requestId);
@@ -163,6 +186,7 @@ public class RequestService {
 
         if (request.isBorrowRequest() == false) {
             requestor.setCoins(requestor.getCoins() + 1);
+            bookOffered.setPrevOwnerId(bookOffered.getOwnerId());
             bookOffered.setOwnerId(request.getRequesteeId());
             bookRepository.save(bookOffered);
         } else {
@@ -179,6 +203,7 @@ public class RequestService {
             bookRequested.setDateOfReturn(dateOfReturn);
         }
 
+        bookRequested.setPrevOwnerId(bookRequested.getOwnerId());
         bookRequested.setOwnerId(request.getRequestorId());
 
         bookRepository.save(bookRequested);

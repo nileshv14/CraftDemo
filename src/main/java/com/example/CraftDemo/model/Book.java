@@ -24,6 +24,8 @@ public class Book {
 
     private Long dateAdded;
 
+    private String prevOwnerId;
+
     public Book() {
 
     }
@@ -106,6 +108,14 @@ public class Book {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPrevOwnerId() {
+        return prevOwnerId;
+    }
+
+    public void setPrevOwnerId(String prevOwnerId) {
+        this.prevOwnerId = prevOwnerId;
     }
 
     public Book(String bookId, String ownerId, String authorName, String bookName,

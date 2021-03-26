@@ -7,7 +7,11 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+/**
+ *  service for adding books and getting their info
+ */
 @Service
 public class BookService {
 
@@ -52,5 +56,18 @@ public class BookService {
             return  null;
         }
         return bookRepository.getBook(id);
+    }
+
+    public void changeToPrevOwner(List<Book>books){
+
+        if(CollectionUtils.isEmpty(books)){
+            return;
+        }
+        for (Book book : books){
+
+            book.setOwnerId(book.getPrevOwnerId());
+            bookRepository.save(book);
+        }
+
     }
 }

@@ -23,4 +23,8 @@ public interface bookRepository extends MongoRepository<Book,String> {
 
     @Query(value = "{ownerId : ?0 ,bookName : ?1, publishingHouse : ?2}")
     Book getUniqueBook(String userId , String bookName , String publishingHouse);
+
+    @Query(value = "{dateOfReturn : {$lte : ?0}}")
+    List<Book> getBooksForOwnerChange(Long time);
+
 }
